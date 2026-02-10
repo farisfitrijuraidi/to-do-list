@@ -1,5 +1,6 @@
 import "./style.css";
 import { projectCollection, createProject, addToProject } from "./todo.js";
+import { displayProject } from "./dom.js";
 
 const testProject = createProject('test');
 const testProject2 = createProject('anotherTest');
@@ -19,3 +20,4 @@ addToProject('anotherTest', {
 });
 
 console.log(projectCollection);
+displayProject(projectCollection);
