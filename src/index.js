@@ -1,24 +1,5 @@
 import "./style.css";
-
-const projectCollection = {};
-
-const createTodo = ({title, description, dueDate, priority}) => {
-    return {
-        title,
-        description,
-        dueDate,
-        priority
-    }
-};
-
-const createProject = (name) => {
-    projectCollection[name] = [];
-};
-
-const addToProject = (name, data) => {
-    const todo = createTodo(data);
-    projectCollection[name].push(todo);
-};
+import { projectCollection, createProject, addToProject } from "./todo.js";
 
 const testProject = createProject('test');
 const testProject2 = createProject('anotherTest');
@@ -37,4 +18,4 @@ addToProject('anotherTest', {
     priority: "Not Urgent"
 });
 
- console.log(projectCollection);
+console.log(projectCollection);
