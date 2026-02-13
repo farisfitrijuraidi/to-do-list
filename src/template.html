@@ -7,10 +7,51 @@
 </head>
 <body>
     <div id="side-bar">
-        
+        <button id="showDialog">New Task</button>
     </div>
     <div id="main-content">
-        
+
     </div>
+    <dialog id="dialog">
+        <form>
+            <div class="form">
+                <label for="title">Title: </label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form">
+                <label for="description">Description: </label>
+                <input type="text" id="description" name="description">
+            </div>
+            <div class="form">
+                <label for="dueDate">Due Date: </label>
+                <input type="date" id="dueDate" name="dueDate">
+            </div>
+            <fieldset>
+                <legend>Priority</legend>
+                <ul>
+                    <li>
+                        <label for="high">High</label>
+                        <input type="radio" id="high" name="priority" value="High">
+                    </li>
+                    <li>
+                        <label for="medium">Medium</label>
+                        <input type="radio" id="medium" name="priority" value="Medium">
+                    </li>
+                    <li>
+                        <label for="low">Low</label>
+                        <input type="radio" id="low" name="priority" value="Low">
+                    </li>
+                    <li>
+                        <label for="none">None</label>
+                        <input type="radio" id="none" name="priority" value="None" checked>
+                    </li>
+                </ul>
+            </fieldset>
+            <div class="cancel-submit">
+                <button type="button" value="cancel" id="cancel-btn">Cancel</button>
+                <button value="default" id="submit-btn">Submit</button>
+            </div>
+        </form>
+    </dialog>
 </body>
 </html>

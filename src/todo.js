@@ -20,21 +20,9 @@ const addToProject = (name, data) => {
     projectCollection[name].push(todo);
 };
 
-const testProject = createProject('test');
-const testProject2 = createProject('anotherTest');
+const defaultProject = createProject('default');
+const testProject2 = createProject('Test');
 
-addToProject('test', {
-    title: "Buy Eggs",
-    description: "Must Chicken Eggs",
-    dueDate: "Today",
-    priority: "Normal"
-});
+const projectNames = Object.keys(projectCollection || {});
 
-addToProject('anotherTest', {
-    title: "Buy Milk",
-    description: "Must Cow Milk",
-    dueDate: "Tomorrow",
-    priority: "Not Urgent"
-});
-
-export { projectCollection, createProject, addToProject };
+export { projectCollection, createProject, addToProject, projectNames };
