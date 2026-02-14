@@ -36,10 +36,18 @@ const getCurrentProject = (e) => {
 const displayTodo = () => {
     mainContent.innerHTML = '';
     projectCollection[currentProject].forEach(todo => {  
-        mainContent.appendChild(createP(`Title: ${todo.title}`));
-        mainContent.appendChild(createP(`Description: ${todo.description}`));
-        mainContent.appendChild(createP(`Due Date: ${todo.dueDate}`));
-        mainContent.appendChild(createP(`Priority: ${todo.priority}`));
+        const titleBtn = document.createElement('button');
+        titleBtn.classList.add('title-button');
+        titleBtn.textContent = todo.title;
+        mainContent.appendChild(titleBtn);
+
+        const divPanel = document.createElement('div');
+        divPanel.classList.add('panel');
+        mainContent.appendChild(divPanel);
+
+        divPanel.appendChild(createP(todo.description));
+        divPanel.appendChild(createP(todo.dueDate));
+        divPanel.appendChild(createP(todo.priority));
 
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'Delete Task';
@@ -51,11 +59,9 @@ const displayTodo = () => {
 }
 
 const handleRemove = (e) => {
-    // e.target.closest('#main-content').remove();
     const idToDelete = e.target.dataset.todoId;
     projectCollection[currentProject] = projectCollection[currentProject].filter(item => item.id !== idToDelete);
     displayTodo();
-    console.log(projectCollection);
 }
 
 const insertTodo = (event) => {
@@ -67,9 +73,24 @@ const insertTodo = (event) => {
         priority: dialog.querySelector("input[name='priority']:checked").value === 'None'
     };
     addToProject(currentProject, todoData);
-    console.log(projectCollection);
     displayTodo();
     dialog.close();
+    accordion();
+};
+
+const accordion = () => {
+    const expandTitle = document.querySelectorAll('.title-button');
+    expandTitle.forEach(title => {
+        title.addEventListener('click', function() {
+            this.classList.toggle('active');
+            const panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+        })
+    })
 };
 
 showDialog.addEventListener('click', () => {
