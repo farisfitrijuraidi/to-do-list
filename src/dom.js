@@ -40,7 +40,22 @@ const displayTodo = () => {
         mainContent.appendChild(createP(`Description: ${todo.description}`));
         mainContent.appendChild(createP(`Due Date: ${todo.dueDate}`));
         mainContent.appendChild(createP(`Priority: ${todo.priority}`));
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete Task';
+        deleteBtn.classList.add('button', 'delete');
+        deleteBtn.dataset.todoId = todo.id;
+        deleteBtn.addEventListener('click', handleRemove);
+        mainContent.appendChild(deleteBtn);
     })            
+}
+
+const handleRemove = (e) => {
+    // e.target.closest('#main-content').remove();
+    const idToDelete = e.target.dataset.todoId;
+    projectCollection[currentProject] = projectCollection[currentProject].filter(item => item.id !== idToDelete);
+    displayTodo();
+    console.log(projectCollection);
 }
 
 const insertTodo = (event) => {
@@ -52,6 +67,7 @@ const insertTodo = (event) => {
         priority: dialog.querySelector("input[name='priority']:checked").value === 'None'
     };
     addToProject(currentProject, todoData);
+    console.log(projectCollection);
     displayTodo();
     dialog.close();
 };
