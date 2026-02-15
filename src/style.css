@@ -7,6 +7,10 @@ body {
     background: linear-gradient(20deg, rgb(110, 47, 255), rgb(255, 104, 17));
 }
 
+aside {
+    display: flex;
+}
+
 form {
     display: flex;   
 }

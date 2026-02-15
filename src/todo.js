@@ -27,8 +27,8 @@ const defaultProject = createProject('Default');
 const secondProject = createProject('Test');
 const thirdProject = createProject('Test 3');
 
-const projectNames = Object.keys(projectCollection || {});
-console.log(projectCollection);
-console.log(projectNames);
 
-export { projectCollection, createProject, addToProject, projectNames };
+console.log(projectCollection);
+
+
+export { projectCollection, createProject, addToProject };

@@ -1,10 +1,13 @@
-import { projectCollection, createProject, addToProject, projectNames } from "./todo.js";
+import { projectCollection, createProject, addToProject } from "./todo.js";
 
-const sidebar = document.querySelector('aside');
+const sidebar = document.querySelector('#side-bar');
 const mainContent = document.querySelector('main');
 const form = document.querySelector('form');
 const addTask = document.querySelector('#addTask-btn');
+const addProject = document.querySelector('#addProject');
+let projectNames = Object.keys(projectCollection || {});
 
+// let projectName;
 let currentProject = 'default'; 
 
 const createP = (text) => {
@@ -43,9 +46,11 @@ const displayTodo = () => {
         inputCheckbox.type = 'checkbox';
         inputCheckbox.dataset.todoId = todo.id;
         inputCheckbox.addEventListener('click', () => {
-            if (inputCheckbox.checked === true) {
+            if (inputCheckbox.checked) {
                 todo.toggleCompleteStatus();
                 console.log(todo.isComplete);
+            } else {
+                todo.isComplete = false;
             }
         })
         titleLabel.prepend(inputCheckbox);
@@ -124,7 +129,22 @@ const accordion = () => {
     })
 };
 
+
 form.addEventListener('submit', insertTodo);
+addProject.addEventListener('click', () => {
+    let newProjectName = prompt("Please type your project's name");
+    if (newProjectName === '' || newProjectName === null) {
+        return;
+    } else {
+        sidebar.innerHTML = '';
+        console.log(newProjectName);
+        createProject(newProjectName);
+        projectNames = Object.keys(projectCollection || {});
+        console.log(projectNames);
+        displayProject();
+    }
+    }
+)
 
 export { projectNames, displayProject, currentProject, accordion };
 
