@@ -1,11 +1,24 @@
+* {
+    box-sizing: border-box;
+}
 body {
+    margin: 0;
+    min-height: 100vh;
     background: linear-gradient(20deg, rgb(110, 47, 255), rgb(255, 104, 17));
 }
 
-.title-button {
+form {
+    display: flex;   
+}
+
+.form.title,
+input[type="text"] {
+    flex-grow: 1;
+}
+
+.title {
     background-color: #eee;
     color: #444;
-    cursor: pointer;
     padding: 18px;
     width: 100%;
     text-align: left;
@@ -19,21 +32,20 @@ body {
     align-items: center;
 }
 
-.title-button::after {
-    content: '+';
+ .title-button {
     font-size: 20px;
     font-weight: bold;
+    border: none;
     transition: transform 0.4s ease;
 }
 
-.title-button.active::after {
-    content: '-';
+ .minus-icon {
     transform: rotate(180deg); 
 }
 
 .title-button:hover,
 .title-button.active {
-    background-color: #ccc;
+    transform: scale(1.05);
 }
 
 .panel {
@@ -42,4 +54,34 @@ body {
   overflow: hidden;
   max-height: 0; 
   transition: max-height 0.3s ease-out; 
+}
+
+.minus-icon {
+    display: none;
+}
+
+.title-button.active .minus-icon {
+    display: block;
+}
+
+.title-button.active .plus-icon {
+    display: none;
+}
+
+.plus-icon {
+    display: block;
+}
+
+input[type="checkbox"]:checked + span {
+    text-decoration: line-through;
+    color: gray;
+}
+
+/* .checked + span {
+    text-decoration: line-through;
+    color: gray;
+} */
+
+span {
+    pointer-events: none;
 }

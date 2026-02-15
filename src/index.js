@@ -1,5 +1,5 @@
 import "./style.css";
 import { projectCollection, createProject, addToProject } from "./todo.js";
-import { projectNames, displayProject, currentProject } from "./dom.js";
+import { projectNames, displayProject, currentProject, accordion } from "./dom.js";
 
 displayProject();

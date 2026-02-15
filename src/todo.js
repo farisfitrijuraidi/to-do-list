@@ -1,13 +1,16 @@
 const projectCollection = {};
 
-const createTodo = ({title, description, dueDate, priority}) => {
+const createTodo = ({title, dueDate, priority}) => {
     const id = crypto.randomUUID();
     return {
         id,
         title,
-        description,
         dueDate,
-        priority
+        priority,
+        isComplete : false,
+        toggleCompleteStatus() {
+            this.isComplete = !this.isComplete;
+        }
     }
 };
 
@@ -20,9 +23,12 @@ const addToProject = (name, data) => {
     projectCollection[name].push(todo);
 };
 
-const defaultProject = createProject('default');
-const testProject2 = createProject('Test');
+const defaultProject = createProject('Default');
+const secondProject = createProject('Test');
+const thirdProject = createProject('Test 3');
 
 const projectNames = Object.keys(projectCollection || {});
+console.log(projectCollection);
+console.log(projectNames);
 
 export { projectCollection, createProject, addToProject, projectNames };
