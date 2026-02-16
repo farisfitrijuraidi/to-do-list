@@ -1,4 +1,4 @@
-const projectCollection = {};
+let projectCollection = {};
 
 const createTodo = ({title, dueDate, priority}) => {
     const id = crypto.randomUUID();
@@ -8,27 +8,38 @@ const createTodo = ({title, dueDate, priority}) => {
         dueDate,
         priority,
         isComplete : false,
-        toggleCompleteStatus() {
-            this.isComplete = !this.isComplete;
-        }
     }
 };
 
 const createProject = (name) => {
     projectCollection[name] = [];
+    saveToLocal();
 };
 
 const addToProject = (name, data) => {
     const todo = createTodo(data);
     projectCollection[name].push(todo);
+    saveToLocal();
 };
 
-const defaultProject = createProject('Default');
-const secondProject = createProject('Test');
-const thirdProject = createProject('Test 3');
+const saveToLocal = () => {
+    console.log("Saving to local storage...");
+    const myObj = projectCollection;
+    const myJSON = JSON.stringify(myObj);
+    localStorage.setItem("myToDoList", myJSON);
+};
 
+const loadFromLocal = () => {
+    let text = localStorage.getItem("myToDoList");
+    console.log("Loading from local storage:", text);
+    if (text) {
+        let obj = JSON.parse(text);
+        Object.assign(projectCollection, obj);
+        console.log("Data parsed successfully!");
+    } else {
+        console.log("No saved data found.");
+    };   
+}
+loadFromLocal();
 
-console.log(projectCollection);
-
-
-export { projectCollection, createProject, addToProject };
+export { projectCollection, createProject, addToProject, saveToLocal };

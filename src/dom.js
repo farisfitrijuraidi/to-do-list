@@ -1,13 +1,11 @@
-import { projectCollection, createProject, addToProject } from "./todo.js";
+import { projectCollection, createProject, addToProject, saveToLocal } from "./todo.js";
 
 const sidebar = document.querySelector('#side-bar');
 const mainContent = document.querySelector('main');
 const form = document.querySelector('form');
-const addTask = document.querySelector('#addTask-btn');
 const addProject = document.querySelector('#addProject');
 let projectNames = Object.keys(projectCollection || {});
 
-// let projectName;
 let currentProject = 'default'; 
 
 const createP = (text) => {
@@ -25,7 +23,7 @@ const displayProject = () => {
         button.addEventListener('click', getCurrentProject);
         sidebar.appendChild(button);
     });
-        
+    saveToLocal();
 }
 
 const getCurrentProject = (e) => {
@@ -36,8 +34,7 @@ const getCurrentProject = (e) => {
 
 const displayTodo = () => {
     mainContent.innerHTML = '';
-    projectCollection[currentProject].forEach(todo => {
-        console.log(todo.isComplete);  
+    projectCollection[currentProject].forEach(todo => { 
         const titleLabel = document.createElement('div');
         titleLabel.classList.add('title');
         mainContent.appendChild(titleLabel);
@@ -47,10 +44,11 @@ const displayTodo = () => {
         inputCheckbox.dataset.todoId = todo.id;
         inputCheckbox.addEventListener('click', () => {
             if (inputCheckbox.checked) {
-                todo.toggleCompleteStatus();
-                console.log(todo.isComplete);
+                todo.isComplete = !todo.isComplete;
+                saveToLocal();
             } else {
                 todo.isComplete = false;
+                saveToLocal();
             }
         })
         titleLabel.prepend(inputCheckbox);
@@ -98,6 +96,7 @@ const handleRemove = (e) => {
     projectCollection[currentProject] = projectCollection[currentProject].filter(item => item.id !== idToDelete);
     displayTodo();
     accordion();
+    saveToLocal();
 }
 
 const insertTodo = (event) => {
@@ -107,10 +106,10 @@ const insertTodo = (event) => {
         dueDate: dueDate.value,
         priority: title.value
     };
-    console.log(todoData);
     addToProject(currentProject, todoData);
     displayTodo();
     accordion();
+    saveToLocal();
 };
 
 const accordion = () => {
@@ -119,7 +118,6 @@ const accordion = () => {
         title.addEventListener('click', function() {
             this.classList.toggle('active');
             const panel = this.parentElement.nextElementSibling;
-            console.log(panel);
             if (panel.style.maxHeight) {
                 panel.style.maxHeight = null;
             } else {
@@ -137,14 +135,11 @@ addProject.addEventListener('click', () => {
         return;
     } else {
         sidebar.innerHTML = '';
-        console.log(newProjectName);
         createProject(newProjectName);
         projectNames = Object.keys(projectCollection || {});
-        console.log(projectNames);
         displayProject();
     }
-    }
-)
+})
 
 export { projectNames, displayProject, currentProject, accordion };
 
