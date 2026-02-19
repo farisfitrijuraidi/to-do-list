@@ -56,24 +56,24 @@ input[type="text"] {
   padding: 0 18px;
   background-color: white;
   overflow: hidden;
-  max-height: 0; 
+  max-height: 0;
   transition: max-height 0.3s ease-out; 
 }
 
-.minus-icon {
-    display: none;
-}
-
-.title-button.active .minus-icon {
+.mdi-chevron-down-circle {
     display: block;
 }
 
-.title-button.active .plus-icon {
+.title-button.active .mdi-chevron-down-circle {
     display: none;
 }
 
-.plus-icon {
+.title-button.active .mdi-chevron-right-circle {
     display: block;
+}
+
+.mdi-chevron-right-circle {
+    display: none;
 }
 
 input[type="checkbox"]:checked + span {
