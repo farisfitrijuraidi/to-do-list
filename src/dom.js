@@ -1,4 +1,4 @@
-import { projectCollection, createProject, addToProject, saveToLocal } from "./todo.js";
+import { projectCollection, createProject, addToProject, saveToLocal, createSubTask, addToToDo } from "./todo.js";
 
 const sidebar = document.querySelector('#side-bar');
 const mainContent = document.querySelector('main');
@@ -14,15 +14,28 @@ const createP = (text) => {
     return p;
 }
 
-
 const displayProject = () => {
     projectNames.forEach(item => {
-        const button = document.createElement('button');
-        button.textContent = item;
-        button.classList.add('button', 'sidebar');
-        button.dataset.projectId = crypto.randomUUID();
-        button.addEventListener('click', getCurrentProject);
-        sidebar.appendChild(button);
+        const div = document.createElement('div');
+        div.classList.add('project-button');
+        sidebar.appendChild(div);
+        const spanButton = document.createElement('span');
+        spanButton.textContent = item;
+        spanButton.classList.add('button', 'sidebar');
+        spanButton.dataset.projectId = item.id;
+        spanButton.addEventListener('click', getCurrentProject);
+        const closeProjectButton = document.createElement('span');
+        closeProjectButton.classList.add('close-project');
+        closeProjectButton.textContent = 'x';
+        closeProjectButton.addEventListener('click', (e) => {
+            sidebar.innerHTML = '';
+            mainContent.innerHTML = '';
+            delete projectCollection[item];
+            projectNames = Object.keys(projectCollection || {}); 
+            displayProject();
+        })
+        div.appendChild(closeProjectButton);
+        div.appendChild(spanButton);
     });
     saveToLocal();
 }
@@ -91,21 +104,35 @@ const displayTodo = () => {
         const divPanel = document.createElement('div');
         divPanel.classList.add('panel');
         mainContent.appendChild(divPanel);
+        const divSubTask = document.createElement('div');
+        divSubTask.classList.add('divSubTask');
+        divPanel.appendChild(divSubTask);
 
         const addSubTask = document.createElement('button');
         addSubTask.classList.add('add-subTask');
         addSubTask.textContent = '+';
-        todo.subTask.forEach(item => displaySubTask(item, divPanel, todo));
+        if (todo.subTask.length > 0) {
+            displayExistingSubTask(divSubTask, todo);
+        }
         addSubTask.addEventListener('click', () => {
-            displaySubTask('', divPanel, todo)
+            if (todo.subTask.length > 0) {
+                console.log(todo.subTask.length);
+                displayExistingSubTask(divSubTask, todo);
+                renderNewSubTask(divSubTask, todo);
+                console.log(todo.subTask);
+            } else {
+                renderNewSubTask(divSubTask, todo);
+            }
         });
-        console.log(todo.subTask);
         titleBtn.appendChild(addSubTask);
 
+        const divDescription = document.createElement('div');
+        divDescription.classList.add('divDescription');
+        divPanel.appendChild(divDescription);
         const formDescription = document.createElement('form');
         const descriptionLabel = document.createElement('label');
         descriptionLabel.for = 'description';
-        divPanel.appendChild(formDescription);
+        divDescription.appendChild(formDescription);
         const descriptionInput = document.createElement('input');
         descriptionInput.type = 'text';
         descriptionInput.id = 'description';
@@ -156,7 +183,7 @@ const insertTodo = (event) => {
     saveToLocal();
 };
 
-const displaySubTask = (item, targetContainer, targetTask) => {
+const renderNewSubTask = (targetContainer, targetTask) => {
     const formSubTask = document.createElement('form');
     const labelSubTask = document.createElement('label');
     labelSubTask.for = 'subtask';
@@ -166,25 +193,100 @@ const displaySubTask = (item, targetContainer, targetTask) => {
     inputSubTask.type = 'text';
     inputSubTask.id = 'subtask';
     inputSubTask.name = 'subtask';
-    inputSubTask.value = item;
     labelSubTask.appendChild(inputSubTask);
     const saveSubTask = document.createElement('button');
     saveSubTask.textContent = 'Save';
-    if (targetTask.subTask.length > 0) {
-        saveSubTask.disabled = true;
-    }
-    if (inputSubTask.value === '') {
+    // if (targetTask.subTask.length > 0) {
+    //     saveSubTask.disabled = true;
+    // }
+    // if (inputSubTask.value === '') {
+    //     saveSubTask.disabled = false;
+    // }
+    const editSubTask = document.createElement('button');
+    editSubTask.textContent = 'Edit';
+    editSubTask.disabled = true;
+    
+    editSubTask.addEventListener('click', (event) => {
+        event.preventDefault();
         saveSubTask.disabled = false;
-    }
+    })
+    labelSubTask.appendChild(editSubTask);
     formSubTask.addEventListener('submit', (event) => {
         event.preventDefault();
-        targetTask.subTask.push(inputSubTask.value);
+        const subTaskData = {
+            title: inputSubTask.value
+        }
+        addToToDo(targetTask.subTask, subTaskData);
         saveToLocal();  
         saveSubTask.disabled = true; 
+        if (saveSubTask.disabled) {
+            editSubTask.disabled = false;
+        }
     })
     labelSubTask.appendChild(saveSubTask);
 }
 
+const displayExistingSubTask = (targetContainer, targetTask) => {
+    targetContainer.innerHTML = '';
+    targetTask.subTask.forEach(item => {
+        const formSubTask = document.createElement('form');
+        const labelSubTask = document.createElement('label');
+        // labelSubTask.innerHTML = '';
+        labelSubTask.for = 'subtask';
+        targetContainer.appendChild(formSubTask);
+        formSubTask.appendChild(labelSubTask);
+        const inputSubTask = document.createElement('input');
+        inputSubTask.type = 'text';
+        inputSubTask.id = 'subtask';
+        inputSubTask.name = 'subtask';
+        inputSubTask.value = item.title;
+        inputSubTask.dataset.subTaskid = item.id;
+        labelSubTask.appendChild(inputSubTask);
+        const saveSubTask = document.createElement('button');
+        saveSubTask.textContent = 'Save';
+        saveSubTask.disabled = true;
+        // if (targetTask.subTask.length > 0) {
+        //     saveSubTask.disabled = true;
+        // }
+        // if (inputSubTask.value === '') {
+        //     saveSubTask.disabled = false;
+        // }
+        const editSubTask = document.createElement('button');
+        editSubTask.textContent = 'Edit';
+        editSubTask.disabled = false;
+        // if (saveSubTask.disabled) {
+        //     editSubTask.disabled = false;
+        // }
+        editSubTask.addEventListener('click', (event) => {
+            event.preventDefault();
+            saveSubTask.disabled = false;
+        })
+        labelSubTask.appendChild(editSubTask);
+        formSubTask.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const foundSubTask = targetTask.subTask.find(obj => obj.id === inputSubTask.dataset.subTaskid);
+            foundSubTask.title = inputSubTask.value;
+            saveToLocal();
+            saveSubTask.disabled = true;
+            // const stringSubTask = JSON.stringify(foundSubTask);
+            // const exists = targetTask.subTask.some(obj => JSON.stringify(obj) === stringSubTask);
+            // if (exists) {
+            //     foundSubTask.title = inputSubTask.value;
+            //     saveToLocal();
+            //     saveSubTask.disabled = true;
+            // } else {
+            //     const subTaskData = {
+            //         title: inputSubTask.value
+            // }
+            //     addToToDo(targetTask.subTask, subTaskData);
+            //     console.log(targetTask.subTask);
+            //     saveToLocal();  
+                // saveSubTask.disabled = true; 
+        })
+        labelSubTask.appendChild(saveSubTask);
+    })     
+}
+    
 form.addEventListener('submit', insertTodo);
 addProject.addEventListener('click', () => {
     let newProjectName = prompt("Please type your project's name");

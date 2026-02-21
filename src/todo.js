@@ -12,9 +12,27 @@ const createTodo = ({title, dueDate, priority, subTask = []}) => {
     }
 };
 
+const createSubTask = ({title}) => {
+    const id = crypto.randomUUID();
+    return {
+        id,
+        title
+    }
+};
+
+const addToToDo = (todo, data) => {
+    const newsubTask = createSubTask(data);
+    todo.push(newsubTask);
+    saveToLocal();
+};
+
 const createProject = (name) => {
     projectCollection[name] = [];
+    const id = crypto.randomUUID();
     saveToLocal();
+    return {
+        id
+    }
 };
 
 const addToProject = (name, data) => {
@@ -35,8 +53,7 @@ const loadFromLocal = () => {
         let obj = JSON.parse(text);
         Object.assign(projectCollection, obj);
     }
-    console.log(text);
 }
 loadFromLocal();
 
-export { projectCollection, createProject, addToProject, saveToLocal };
+export { projectCollection, createProject, addToProject, saveToLocal, createSubTask, addToToDo };
