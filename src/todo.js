@@ -20,9 +20,9 @@ const createSubTask = ({title}) => {
     }
 };
 
-const addToToDo = (todo, data) => {
-    const newsubTask = createSubTask(data);
-    todo.push(newsubTask);
+const addToToDo = (todo, obj) => {
+    // const newsubTask = createSubTask(data);
+    todo.push(obj);
     saveToLocal();
 };
 

@@ -111,18 +111,9 @@ const displayTodo = () => {
         const addSubTask = document.createElement('button');
         addSubTask.classList.add('add-subTask');
         addSubTask.textContent = '+';
-        if (todo.subTask.length > 0) {
-            displayExistingSubTask(divSubTask, todo);
-        }
+        todo.subTask.forEach(item => renderSubTask(item, divSubTask, todo));
         addSubTask.addEventListener('click', () => {
-            if (todo.subTask.length > 0) {
-                console.log(todo.subTask.length);
-                displayExistingSubTask(divSubTask, todo);
-                renderNewSubTask(divSubTask, todo);
-                console.log(todo.subTask);
-            } else {
-                renderNewSubTask(divSubTask, todo);
-            }
+            renderSubTask('',divSubTask, todo);
         });
         titleBtn.appendChild(addSubTask);
 
@@ -183,7 +174,7 @@ const insertTodo = (event) => {
     saveToLocal();
 };
 
-const renderNewSubTask = (targetContainer, targetTask) => {
+const renderSubTask = (item, targetContainer, targetTask) => {
     const formSubTask = document.createElement('form');
     const labelSubTask = document.createElement('label');
     labelSubTask.for = 'subtask';
@@ -193,98 +184,76 @@ const renderNewSubTask = (targetContainer, targetTask) => {
     inputSubTask.type = 'text';
     inputSubTask.id = 'subtask';
     inputSubTask.name = 'subtask';
+    inputSubTask.dataset.subTaskid = item.id;
+    if (targetTask.subTask.length === 0) {
+        inputSubTask.value = ''  
+    } else if (targetTask.subTask.length > 0) {
+        inputSubTask.value = item.title || '';
+    }
     labelSubTask.appendChild(inputSubTask);
     const saveSubTask = document.createElement('button');
     saveSubTask.textContent = 'Save';
-    // if (targetTask.subTask.length > 0) {
-    //     saveSubTask.disabled = true;
-    // }
-    // if (inputSubTask.value === '') {
-    //     saveSubTask.disabled = false;
-    // }
+    labelSubTask.appendChild(saveSubTask);
     const editSubTask = document.createElement('button');
     editSubTask.textContent = 'Edit';
-    editSubTask.disabled = true;
-    
+    if (inputSubTask.value !== '') {
+        editSubTask.disabled = false;
+        saveSubTask.disabled = true;
+    } else {
+        editSubTask.disabled = true;
+        saveSubTask.disabled = false;
+    }
+    const closeSubTaskButton = document.createElement('span');
+    closeSubTaskButton.classList.add('close-subtask');
+    closeSubTaskButton.textContent = 'x';
+    closeSubTaskButton.addEventListener('click', (e) => {
+        closeSubTaskButton.dataset.subTaskid = item.id || '';
+        if (closeSubTaskButton.dataset.subTaskid === '') {
+            e.target.parentElement.parentElement.remove();
+        } else {
+            const idToDelete = e.target.dataset.subTaskid;
+            targetTask.subTask = targetTask.subTask.filter(item => item.id !== idToDelete);
+            e.target.parentElement.parentElement.remove();
+            saveToLocal();
+        }
+    })
     editSubTask.addEventListener('click', (event) => {
         event.preventDefault();
         saveSubTask.disabled = false;
+        saveSubTask.addEventListener('click', (e) => {
+            const foundSubTask = targetTask.subTask.find(obj => obj.id === e.target.previousElementSibling.dataset.subTaskid);
+            console.log(foundSubTask);
+            console.log(targetTask.subTask);
+            console.log(e.target.previousElementSibling.dataset.subTaskid);
+            foundSubTask.title = inputSubTask.value;
+            saveSubTask.disabled = true;
+            saveToLocal();
+        })
     })
     labelSubTask.appendChild(editSubTask);
     formSubTask.addEventListener('submit', (event) => {
         event.preventDefault();
         const subTaskData = {
-            title: inputSubTask.value
-        }
-        addToToDo(targetTask.subTask, subTaskData);
-        saveToLocal();  
+                title: inputSubTask.value,
+            }
+        const newsubTask = createSubTask(subTaskData);
+        inputSubTask.dataset.subTaskid = newsubTask.id;
+        addToToDo(targetTask.subTask, newsubTask);
         saveSubTask.disabled = true; 
+        closeSubTaskButton.dataset.subTaskid = newsubTask.id;
+        closeSubTaskButton.addEventListener('click', (e) => {
+            const idToDelete = e.target.dataset.subTaskid;
+            targetTask.subTask = targetTask.subTask.filter(item => item.id !== idToDelete);
+            e.target.parentElement.parentElement.remove();
+            saveToLocal();
+        })
+        
         if (saveSubTask.disabled) {
             editSubTask.disabled = false;
-        }
+        } 
+        saveToLocal();  
     })
-    labelSubTask.appendChild(saveSubTask);
-}
-
-const displayExistingSubTask = (targetContainer, targetTask) => {
-    targetContainer.innerHTML = '';
-    targetTask.subTask.forEach(item => {
-        const formSubTask = document.createElement('form');
-        const labelSubTask = document.createElement('label');
-        // labelSubTask.innerHTML = '';
-        labelSubTask.for = 'subtask';
-        targetContainer.appendChild(formSubTask);
-        formSubTask.appendChild(labelSubTask);
-        const inputSubTask = document.createElement('input');
-        inputSubTask.type = 'text';
-        inputSubTask.id = 'subtask';
-        inputSubTask.name = 'subtask';
-        inputSubTask.value = item.title;
-        inputSubTask.dataset.subTaskid = item.id;
-        labelSubTask.appendChild(inputSubTask);
-        const saveSubTask = document.createElement('button');
-        saveSubTask.textContent = 'Save';
-        saveSubTask.disabled = true;
-        // if (targetTask.subTask.length > 0) {
-        //     saveSubTask.disabled = true;
-        // }
-        // if (inputSubTask.value === '') {
-        //     saveSubTask.disabled = false;
-        // }
-        const editSubTask = document.createElement('button');
-        editSubTask.textContent = 'Edit';
-        editSubTask.disabled = false;
-        // if (saveSubTask.disabled) {
-        //     editSubTask.disabled = false;
-        // }
-        editSubTask.addEventListener('click', (event) => {
-            event.preventDefault();
-            saveSubTask.disabled = false;
-        })
-        labelSubTask.appendChild(editSubTask);
-        formSubTask.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const foundSubTask = targetTask.subTask.find(obj => obj.id === inputSubTask.dataset.subTaskid);
-            foundSubTask.title = inputSubTask.value;
-            saveToLocal();
-            saveSubTask.disabled = true;
-            // const stringSubTask = JSON.stringify(foundSubTask);
-            // const exists = targetTask.subTask.some(obj => JSON.stringify(obj) === stringSubTask);
-            // if (exists) {
-            //     foundSubTask.title = inputSubTask.value;
-            //     saveToLocal();
-            //     saveSubTask.disabled = true;
-            // } else {
-            //     const subTaskData = {
-            //         title: inputSubTask.value
-            // }
-            //     addToToDo(targetTask.subTask, subTaskData);
-            //     console.log(targetTask.subTask);
-            //     saveToLocal();  
-                // saveSubTask.disabled = true; 
-        })
-        labelSubTask.appendChild(saveSubTask);
-    })     
+    labelSubTask.appendChild(closeSubTaskButton);
 }
     
 form.addEventListener('submit', insertTodo);
