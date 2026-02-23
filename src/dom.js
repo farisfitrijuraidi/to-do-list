@@ -207,47 +207,37 @@ const renderSubTask = (item, targetContainer, targetTask) => {
     closeSubTaskButton.classList.add('close-subtask');
     closeSubTaskButton.textContent = 'x';
     closeSubTaskButton.addEventListener('click', (e) => {
-        closeSubTaskButton.dataset.subTaskid = item.id || '';
-        if (closeSubTaskButton.dataset.subTaskid === '') {
-            e.target.parentElement.parentElement.remove();
-        } else {
-            const idToDelete = e.target.dataset.subTaskid;
+        if (inputSubTask.dataset.subTaskid) {
+            const idToDelete = inputSubTask.dataset.subTaskid;
             targetTask.subTask = targetTask.subTask.filter(item => item.id !== idToDelete);
             e.target.parentElement.parentElement.remove();
             saveToLocal();
+        } else {
+            e.target.parentElement.parentElement.remove();
         }
     })
     editSubTask.addEventListener('click', (event) => {
         event.preventDefault();
         saveSubTask.disabled = false;
-        saveSubTask.addEventListener('click', (e) => {
-            const foundSubTask = targetTask.subTask.find(obj => obj.id === e.target.previousElementSibling.dataset.subTaskid);
-            console.log(foundSubTask);
-            console.log(targetTask.subTask);
-            console.log(e.target.previousElementSibling.dataset.subTaskid);
-            foundSubTask.title = inputSubTask.value;
-            saveSubTask.disabled = true;
-            saveToLocal();
-        })
     })
     labelSubTask.appendChild(editSubTask);
     formSubTask.addEventListener('submit', (event) => {
         event.preventDefault();
-        const subTaskData = {
-                title: inputSubTask.value,
-            }
-        const newsubTask = createSubTask(subTaskData);
-        inputSubTask.dataset.subTaskid = newsubTask.id;
-        addToToDo(targetTask.subTask, newsubTask);
-        saveSubTask.disabled = true; 
-        closeSubTaskButton.dataset.subTaskid = newsubTask.id;
-        closeSubTaskButton.addEventListener('click', (e) => {
-            const idToDelete = e.target.dataset.subTaskid;
-            targetTask.subTask = targetTask.subTask.filter(item => item.id !== idToDelete);
-            e.target.parentElement.parentElement.remove();
+        const foundSubTask = targetTask.subTask.find(obj => obj.id === inputSubTask.dataset.subTaskid || '');
+        if (foundSubTask) {
+            foundSubTask.title = inputSubTask.value;
+            saveSubTask.disabled = true;
             saveToLocal();
-        })
-        
+        } else {
+            const subTaskData = {
+                    title: inputSubTask.value,
+                }
+            const newsubTask = createSubTask(subTaskData);
+            inputSubTask.dataset.subTaskid = newsubTask.id;
+            addToToDo(targetTask.subTask, newsubTask);
+            saveSubTask.disabled = true; 
+            closeSubTaskButton.dataset.subTaskid = newsubTask.id;
+        }
         if (saveSubTask.disabled) {
             editSubTask.disabled = false;
         } 
