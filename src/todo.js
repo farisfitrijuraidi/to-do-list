@@ -27,12 +27,13 @@ const addToToDo = (todo, obj) => {
 };
 
 const createProject = (name) => {
+    let activeProject;
     projectCollection[name] = [];
-    const id = crypto.randomUUID();
-    saveToLocal();
-    return {
-        id
+    if (Object.keys(projectCollection).length === 1) {
+        activeProject = name;
     }
+    saveToLocal();
+    return activeProject;
 };
 
 const addToProject = (name, data) => {

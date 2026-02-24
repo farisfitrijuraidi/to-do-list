@@ -18,20 +18,16 @@
             <div class="form title">
                 <input type="text" id="title" name="title" placeholder="Add a task here..">
             </div>
-            <!-- <div class="form">
-                <label for="description">Description: </label>
-                <input type="text" id="description" name="description">
-            </div> -->
             <div class="form dueDate">
                 <label for="dueDate">Due Date: </label>
                 <input type="date" id="dueDate" name="dueDate">
             </div>
-            <select name="priority">
-                <option>Please select a priority</option>
-                <option>High</option>
-                <option>Medium</option>
-                <option>Low</option>
-                <option>None</option>
+            <select id="priority">
+                <option value="">Please select a priority</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+                <option value="None">None</option>
             </select>
             <div class="addTask">
                 <button value="default" id="addTask-btn">Add Task</button>

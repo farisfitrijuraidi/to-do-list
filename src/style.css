@@ -43,8 +43,7 @@ input[type="text"] {
     transition: transform 0.4s ease;
 }
 
-.title-button:hover,
-.title-button.active {
+.title-button:hover {
     transform: scale(1.05);
 }
 
@@ -56,34 +55,8 @@ input[type="text"] {
   transition: max-height 0.3s ease-out; 
 }
 
-.mdi-chevron-down-circle {
-    display: block;
-}
-
-.title-button.active .mdi-chevron-down-circle {
-    display: none;
-}
-
-.title-button.active .mdi-chevron-right-circle {
-    display: block;
-}
-
-.mdi-chevron-right-circle {
-    display: none;
-}
-
 input[type="checkbox"]:checked + span,
 input[type="checkbox"]:checked + input {
     text-decoration: line-through;
     color: gray;
 }
-
-
-/* .checked + span {
-    text-decoration: line-through;
-    color: gray;
-} */
-
-/* span {
-    pointer-events: none;
-} */

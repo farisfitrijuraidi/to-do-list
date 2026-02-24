@@ -5,8 +5,7 @@ const mainContent = document.querySelector('main');
 const form = document.querySelector('form');
 const addProject = document.querySelector('#addProject');
 let projectNames = Object.keys(projectCollection || {});
-
-let currentProject = 'default'; 
+let currentProject;
 
 const createP = (text) => {
     const p = document.createElement('p');
@@ -76,18 +75,9 @@ const displayTodo = () => {
         spanTitle.textContent = todo.title;
         titleLabel.appendChild(spanTitle);
 
+        const divPanel = document.createElement('div');
+        divPanel.classList.add('panel', 'active');
         const titleBtn = document.createElement('button');
-        titleBtn.classList.add('title-button');
-        titleBtn.addEventListener('click', function () {
-            this.classList.toggle('active');
-            const panel = this.parentElement.nextElementSibling;
-            if (panel.style.maxHeight) {
-                panel.style.maxHeight = null;
-            } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
-            }
-        })
-        titleLabel.appendChild(titleBtn);
 
         const expandIcon = document.createElement('span');
         expandIcon.classList.add('mdi', 'mdi-chevron-right-circle');
@@ -101,8 +91,26 @@ const displayTodo = () => {
         minimiseIcon.style.fontSize = "24px";
         titleBtn.appendChild(minimiseIcon);
 
-        const divPanel = document.createElement('div');
-        divPanel.classList.add('panel');
+        titleBtn.classList.add('title-button');
+        if (divPanel.classList.contains('active')) {
+            divPanel.style.maxHeight = divPanel.scrollHeight + "px";
+            expandIcon.style.display = 'none';
+            minimiseIcon.style.display = 'block';
+        }
+        titleBtn.addEventListener('click', () => {
+            divPanel.classList.toggle('active');
+            if (divPanel.classList.contains('active')) {
+                divPanel.style.maxHeight = divPanel.scrollHeight + "px";
+                expandIcon.style.display = 'none';
+                minimiseIcon.style.display = 'block';
+            } else {
+                divPanel.style.maxHeight = "0px";
+                expandIcon.style.display = 'block';
+                minimiseIcon.style.display = 'none';
+            }
+        })
+        titleLabel.appendChild(titleBtn);
+  
         mainContent.appendChild(divPanel);
         const divSubTask = document.createElement('div');
         divSubTask.classList.add('divSubTask');
@@ -112,7 +120,8 @@ const displayTodo = () => {
         addSubTask.classList.add('add-subTask');
         addSubTask.textContent = '+';
         todo.subTask.forEach(item => renderSubTask(item, divSubTask, todo));
-        addSubTask.addEventListener('click', () => {
+        addSubTask.addEventListener('click', (event) => {
+            event.stopPropagation();
             renderSubTask('',divSubTask, todo);
         });
         titleBtn.appendChild(addSubTask);
@@ -167,7 +176,7 @@ const insertTodo = (event) => {
     const todoData = {
         title: title.value,
         dueDate: dueDate.value,
-        priority: title.value
+        priority: document.getElementById('priority').value
     };
     addToProject(currentProject, todoData);
     displayTodo();
@@ -176,7 +185,6 @@ const insertTodo = (event) => {
 
 const renderSubTask = (item, targetContainer, targetTask) => {
     let newsubTask;
-    console.log(newsubTask);
     const formSubTask = document.createElement('form');
     const labelSubTask = document.createElement('label');
     labelSubTask.for = 'subtask';
@@ -286,7 +294,7 @@ addProject.addEventListener('click', () => {
         return;
     } else {
         sidebar.innerHTML = '';
-        createProject(newProjectName);
+        currentProject = createProject(newProjectName);
         projectNames = Object.keys(projectCollection || {});
         displayProject();
     }
