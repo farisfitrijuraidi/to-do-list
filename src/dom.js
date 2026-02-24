@@ -175,6 +175,8 @@ const insertTodo = (event) => {
 };
 
 const renderSubTask = (item, targetContainer, targetTask) => {
+    let newsubTask;
+    console.log(newsubTask);
     const formSubTask = document.createElement('form');
     const labelSubTask = document.createElement('label');
     labelSubTask.for = 'subtask';
@@ -191,6 +193,36 @@ const renderSubTask = (item, targetContainer, targetTask) => {
         inputSubTask.value = item.title || '';
     }
     labelSubTask.appendChild(inputSubTask);
+    const subTaskCheckbox = document.createElement('input');
+    subTaskCheckbox.type = 'checkbox';
+    subTaskCheckbox.addEventListener('click', () => {
+        if (newsubTask) {
+            if (newsubTask.id !== inputSubTask.dataset.subTaskid && subTaskCheckbox.checked === true) {
+                item.isComplete = !item.isComplete;
+                saveToLocal();
+            } else if (newsubTask.id === inputSubTask.dataset.subTaskid && subTaskCheckbox.checked === true ) {
+                newsubTask.isComplete = !newsubTask.isComplete;
+                saveToLocal();
+            } else {
+                newsubTask.isComplete = false;
+                saveToLocal();
+            }
+        } else {
+            if (subTaskCheckbox.checked === true) {
+                item.isComplete = !item.isComplete;
+                saveToLocal();
+            } else {
+                item.isComplete = false;
+                saveToLocal();
+            }  
+        }
+    })
+    if (/\d/.test(inputSubTask.dataset.subTaskid)) {
+        labelSubTask.prepend(subTaskCheckbox);
+    }
+    if (item.isComplete) {
+        subTaskCheckbox.checked = true;
+    }
     const saveSubTask = document.createElement('button');
     saveSubTask.textContent = 'Save';
     labelSubTask.appendChild(saveSubTask);
@@ -232,11 +264,12 @@ const renderSubTask = (item, targetContainer, targetTask) => {
             const subTaskData = {
                     title: inputSubTask.value,
                 }
-            const newsubTask = createSubTask(subTaskData);
+            newsubTask = createSubTask(subTaskData);
             inputSubTask.dataset.subTaskid = newsubTask.id;
             addToToDo(targetTask.subTask, newsubTask);
             saveSubTask.disabled = true; 
             closeSubTaskButton.dataset.subTaskid = newsubTask.id;
+            labelSubTask.prepend(subTaskCheckbox);
         }
         if (saveSubTask.disabled) {
             editSubTask.disabled = false;

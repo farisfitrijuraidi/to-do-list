@@ -16,12 +16,12 @@ const createSubTask = ({title}) => {
     const id = crypto.randomUUID();
     return {
         id,
-        title
+        title,
+        isComplete : false,
     }
 };
 
 const addToToDo = (todo, obj) => {
-    // const newsubTask = createSubTask(data);
     todo.push(obj);
     saveToLocal();
 };

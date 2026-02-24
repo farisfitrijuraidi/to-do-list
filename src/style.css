@@ -72,10 +72,12 @@ input[type="text"] {
     display: none;
 }
 
-input[type="checkbox"]:checked + span {
+input[type="checkbox"]:checked + span,
+input[type="checkbox"]:checked + input {
     text-decoration: line-through;
     color: gray;
 }
+
 
 /* .checked + span {
     text-decoration: line-through;
