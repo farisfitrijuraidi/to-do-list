@@ -27,13 +27,9 @@ const addToToDo = (todo, obj) => {
 };
 
 const createProject = (name) => {
-    let activeProject;
     projectCollection[name] = [];
-    if (Object.keys(projectCollection).length === 1) {
-        activeProject = name;
-    }
     saveToLocal();
-    return activeProject;
+    return name;
 };
 
 const addToProject = (name, data) => {

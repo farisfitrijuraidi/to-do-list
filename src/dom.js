@@ -119,10 +119,16 @@ const displayTodo = () => {
         const addSubTask = document.createElement('button');
         addSubTask.classList.add('add-subTask');
         addSubTask.textContent = '+';
-        todo.subTask.forEach(item => renderSubTask(item, divSubTask, todo));
+        todo.subTask.forEach(item => renderSubTask(item, divSubTask, todo, divPanel));
         addSubTask.addEventListener('click', (event) => {
             event.stopPropagation();
-            renderSubTask('',divSubTask, todo);
+            renderSubTask('',divSubTask, todo, divPanel);
+            if (!divPanel.classList.contains('active')) {
+                divPanel.classList.toggle('active');
+                divPanel.style.maxHeight = divPanel.scrollHeight + "px";
+                expandIcon.style.display = 'none';
+                minimiseIcon.style.display = 'block';
+            }
         });
         titleBtn.appendChild(addSubTask);
 
@@ -138,7 +144,7 @@ const displayTodo = () => {
         descriptionInput.id = 'description';
         descriptionInput.name = 'description';
         descriptionInput.placeholder = 'Add description...';
-        todo.description === undefined ? descriptionInput.value === '': descriptionInput.value = todo.description;
+        todo.description === undefined ? descriptionInput.value = '': descriptionInput.value = todo.description;
         const saveDescription = document.createElement('button');
         saveDescription.textContent = 'Save';
         formDescription.addEventListener('submit', (event) => {
@@ -183,7 +189,7 @@ const insertTodo = (event) => {
     saveToLocal();
 };
 
-const renderSubTask = (item, targetContainer, targetTask) => {
+const renderSubTask = (item, targetContainer, targetTask, targetContainer2) => {
     let newsubTask;
     const formSubTask = document.createElement('form');
     const labelSubTask = document.createElement('label');
@@ -285,6 +291,7 @@ const renderSubTask = (item, targetContainer, targetTask) => {
         saveToLocal();  
     })
     labelSubTask.appendChild(closeSubTaskButton);
+    targetContainer2.style.maxHeight = targetContainer2.scrollHeight + "px";
 }
     
 form.addEventListener('submit', insertTodo);
