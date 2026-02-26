@@ -179,14 +179,19 @@ const handleRemove = (e) => {
 }
 const insertTodo = (event) => {
     event.preventDefault();
-    const todoData = {
-        title: title.value,
-        dueDate: dueDate.value,
-        priority: document.getElementById('priority').value
-    };
-    addToProject(currentProject, todoData);
-    displayTodo();
-    saveToLocal();
+    if (!currentProject) {
+        alert('No active project selected!');
+        return;
+    } else {
+        const todoData = {
+            title: title.value,
+            dueDate: dueDate.value,
+            priority: document.getElementById('priority').value
+        };
+        addToProject(currentProject, todoData);
+        displayTodo();
+        saveToLocal();
+    }
 };
 
 const renderSubTask = (item, targetContainer, targetTask, targetContainer2) => {
