@@ -16,35 +16,41 @@ const createP = (text) => {
 const displayProject = () => {
     projectNames.forEach(item => {
         const div = createNode('div', 'project-button', '');
+        div.addEventListener('click', getCurrentProject);
         sidebar.appendChild(div);
 
         // Project Button Logic
         const spanButton = createNode('span', 'button sidebar', item);
         spanButton.dataset.projectId = item.id;
-        spanButton.addEventListener('click', getCurrentProject);
 
         // Close Project Button Logic
-        const closeProjectButton = createNode('span', 'close-project', 'x');
-        closeProjectButton.addEventListener('click', () => {
-            handleCloseProjectButton(item)
+        const closeProjectButton = createNode('span', 'mdi mdi-close', '');
+        closeProjectButton.addEventListener('click', (e) => {
+            handleCloseProjectButton(e, item)
         });
 
-        div.appendChild(closeProjectButton);
         div.appendChild(spanButton);
+        div.appendChild(closeProjectButton);
     })
-    saveToLocal();
 };
 
-const handleCloseProjectButton = (targetItem) => {
+const handleCloseProjectButton = (e, targetItem) => {
+    e.stopPropagation();
     sidebar.innerHTML = '';
     mainContent.innerHTML = '';
     delete projectCollection[targetItem];
     projectNames = Object.keys(projectCollection || {}); 
     displayProject();
+    saveToLocal();
 };
 
 const getCurrentProject = (e) => {
-    currentProject = e.target.textContent;
+    currentProject = e.currentTarget.textContent;
+    const projectButtons = document.querySelectorAll('.project-button');
+    projectButtons.forEach(btn => {
+        btn.classList.remove('active');
+        e.currentTarget.classList.add('active');
+    })
     console.log(currentProject);
     displayTodo();
 };
@@ -212,7 +218,6 @@ const insertTodo = (event) => {
         };
         addToProject(currentProject, todoData);
         displayTodo();
-        saveToLocal();
     }
 };
 
@@ -303,7 +308,6 @@ const handleFormSubmit = (e, targetTask2, targetInput, targetSubTaskButton, targ
     if (targetSubTaskButton.disabled) {
         targetEditST.disabled = false;
     } 
-    saveToLocal(); 
     return targetNewSubTask; 
 };
 

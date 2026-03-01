@@ -1,14 +1,127 @@
+:root {
+    --color-primary: blueviolet;
+    --color-secondary: rgb(71, 0, 138);
+    --color-accent: #ffffff;
+
+    --button-active: #e7e7e7;
+    --button-inactive: rgb(241, 241, 241);
+    
+    --bg-main: #DFDBE5;
+    --bg-panel: blueviolet;
+    
+    --border-standard: 1px solid black;
+
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 32px;
+    --space-xl: 64px;
+
+    --font-heading: 'Quintessential', serif;
+    --font-body: 'Delius', sans-serif;
+    --font-ui: 'Roboto', sans-serif;
+    --font-ui2: 'Inter', sans-serif;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('Roboto-Regular.woff2') format('woff2'),
+        url('Roboto-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Delius';
+    src: url('Delius-Regular.woff2') format('woff2'),
+        url('Delius-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Quintessential';
+    src: url('Quintessential-Regular.woff2') format('woff2'),
+        url('Quintessential-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('Inter-Regular.woff2') format('woff2'),
+        url('Inter-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 * {
     box-sizing: border-box;
 }
 body {
     margin: 0;
     min-height: 100vh;
-    background: linear-gradient(20deg, rgb(110, 47, 255), rgb(255, 104, 17));
+    padding: var(--space-sm);
+    background-color: var(--button-inactive);
+    /* background: linear-gradient(20deg, rgb(110, 47, 255), rgb(255, 104, 17)); */
 }
 
 aside {
     display: flex;
+    padding: var(--space-xs);
+    gap: var(--space-sm);
+}
+
+.addProject {
+    font-family: var(--font-ui2);
+    font-size: large;
+    border: none;
+    border-radius: var(--space-sm);
+    padding-bottom: 2px;
+    cursor: pointer;
+}
+
+.addProject:hover {
+    background-color: var(--button-active);
+}
+
+.side-bar {
+    display: flex;
+    gap: var(--space-sm);
+    font-family: var(--font-ui2);
+}
+
+.project-button {
+    display: flex;
+    gap: var(--space-xl);
+    padding: var(--space-sm);
+    border-radius: var(--space-sm);
+    background-color: var(--button-inactive);
+    cursor: pointer;
+}
+
+.project-button:hover {
+    background-color: var(--button-active);
+}
+
+.project-button.active {
+    background-color: white;
+}
+
+.mdi-close {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    padding-left: 2px;
+    cursor: pointer;
+}
+
+.mdi-close:hover {
+    background-color: var(--button-inactive);
 }
 
 form {

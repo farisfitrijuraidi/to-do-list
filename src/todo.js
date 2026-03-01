@@ -28,7 +28,6 @@ const addToToDo = (todo, obj) => {
 
 const createProject = (name) => {
     const foundProject = Object.keys(projectCollection).find(project => project === name);
-    console.log(foundProject);
     if (foundProject) {
         alert('Project name existed.');
         return foundProject;
