@@ -10,6 +10,7 @@
     --bg-panel: blueviolet;
     
     --border-standard: 1px solid black;
+    --border-light-grey: #E5E7EB;
 
     --space-xs: 4px;
     --space-sm: 8px;
@@ -119,6 +120,7 @@ aside {
 .button.sidebar {
     min-width: 0;
     width: 200px;          
+    font-size: 1rem;
     white-space: nowrap;    
     overflow: hidden;       
     text-overflow: ellipsis;
@@ -136,26 +138,47 @@ aside {
     background-color: var(--button-inactive);
 }
 
-form {
-    display: flex;   
+.input-task form {
+    display: grid;
+    grid-template-columns: minmax(500px, 1500px) 1fr 1fr max-content;
+    gap: var(--space-sm);   
 }
 
-.form.title,
-input[type="text"] {
+input[type="text"],
+input[type="date"],
+select,
+.addTask-btn {
     flex-grow: 1;
+    padding: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: var(--space-sm);
+    border: 1px solid var(--border-light-grey);
+    font-family: var(--font-ui2);
+    background-color: white;
+}
+
+input[type="text"] {
+    cursor: text;
+}
+
+input[type="date"],
+select,
+.addTask-btn {
+    cursor: pointer;
 }
 
 .title {
-    background-color: #eee;
+    /* background-color: #eee; */
     color: #444;
-    padding: 18px;
+    /* padding: 18px; */
     width: 100%;
     text-align: left;
     border: none;
     outline: none;
     transition: 0.4s; 
     font-size: 16px;
-    border-bottom: 1px solid #ddd;
+    /* border-bottom: 1px solid #ddd; */
     display: flex;
     justify-content: space-between; 
     align-items: center;
