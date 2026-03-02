@@ -71,7 +71,8 @@ body {
 }
 
 aside {
-    display: flex;
+    display: grid;
+    grid-template-columns: min-content auto;
     padding: var(--space-xs);
     gap: var(--space-sm);
 }
@@ -90,14 +91,16 @@ aside {
 }
 
 .side-bar {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 200px));
     gap: var(--space-sm);
     font-family: var(--font-ui2);
 }
 
 .project-button {
     display: flex;
-    gap: var(--space-xl);
+    justify-content: space-between;
+    gap: var(--space-sm);
     padding: var(--space-sm);
     border-radius: var(--space-sm);
     background-color: var(--button-inactive);
@@ -110,6 +113,15 @@ aside {
 
 .project-button.active {
     background-color: white;
+    transition: background-color 0.2s ease;
+}
+
+.button.sidebar {
+    min-width: 0;
+    width: 200px;          
+    white-space: nowrap;    
+    overflow: hidden;       
+    text-overflow: ellipsis;
 }
 
 .mdi-close {
