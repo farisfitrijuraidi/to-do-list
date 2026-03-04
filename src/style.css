@@ -6,7 +6,7 @@
     --button-active: #e7e7e7;
     --button-inactive: rgb(241, 241, 241);
     
-    --bg-main: #DFDBE5;
+    --bg-main: #f8f8fa;
     --bg-panel: blueviolet;
     
     --border-standard: 1px solid black;
@@ -22,6 +22,7 @@
     --font-body: 'Delius', sans-serif;
     --font-ui: 'Roboto', sans-serif;
     --font-ui2: 'Inter', sans-serif;
+    --font-size-standard: 1rem;
 }
 
 @font-face {
@@ -68,7 +69,6 @@ body {
     min-height: 100vh;
     padding: var(--space-sm);
     background-color: var(--button-inactive);
-    /* background: linear-gradient(20deg, rgb(110, 47, 255), rgb(255, 104, 17)); */
 }
 
 aside {
@@ -120,7 +120,7 @@ aside {
 .button.sidebar {
     min-width: 0;
     width: 200px;          
-    font-size: 1rem;
+    font-size: var(--font-size-standard);
     white-space: nowrap;    
     overflow: hidden;       
     text-overflow: ellipsis;
@@ -150,16 +150,26 @@ select,
 .addTask-btn {
     flex-grow: 1;
     padding: 0.75rem;
-    font-size: 1rem;
+    font-size: var(--font-size-standard);
     line-height: 1.5;
     border-radius: var(--space-sm);
     border: 1px solid var(--border-light-grey);
     font-family: var(--font-ui2);
+}
+
+input[type="text"],
+input[type="date"],
+select {
     background-color: white;
 }
 
+.addTask-btn {
+    background-color: black;
+    color: white;
+}
 input[type="text"] {
     cursor: text;
+    width: 100%;
 }
 
 input[type="date"],
@@ -168,31 +178,85 @@ select,
     cursor: pointer;
 }
 
-.title {
-    /* background-color: #eee; */
-    color: #444;
-    /* padding: 18px; */
-    width: 100%;
-    text-align: left;
-    border: none;
-    outline: none;
-    transition: 0.4s; 
-    font-size: 16px;
-    /* border-bottom: 1px solid #ddd; */
+.task-info {
+    display: grid;
+    grid-template-columns: 50px repeat(3, 1fr) 90px;
+    padding: 12px;
+}
+
+.task-info .action {
     display: flex;
+    justify-content: center;
+}
+
+.task-info span {
+    font-family: var(--font-ui2); 
+    font-size: var(--font-size-standard);
+    line-height: 1.5;
+    font-weight: bold;
+}
+
+main {
+    padding: 12px;
+    background-color: var(--bg-main);
+}
+
+.title {
+    display: grid;
+    grid-template-columns: 50px repeat(3, 1fr) 90px;
+    border: 1px solid var(--border-light-grey);
+    border-radius: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    font-family: var(--font-ui2);
+    width: 100%;
+    height: 60px;
+    font-size: var(--font-size-standard);
     justify-content: space-between; 
     align-items: center;
 }
 
  .title-button {
-    font-size: 20px;
-    font-weight: bold;
     border: none;
-    transition: transform 0.4s ease;
+    background-color: var(--bg-main);
+    display: flex;
+    gap: var(--space-xs);
 }
 
-.title-button:hover {
-    transform: scale(1.05);
+.add-subTask,
+.button.delete {
+    background-color: #ebecee;
+    font-size: 1.25rem;
+    font-family: var(--font-ui2);
+    cursor: pointer;
+    border: 1px solid #cbcacf;
+    border-radius: var(--space-xs);
+    height: 24px;
+    width: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.mdi-chevron-right,
+.mdi-chevron-down {
+   background-color: #ebecee; 
+   border: 1px solid #cbcacf;
+   border-radius: var(--space-xs);
+   width: 24px;
+   height: 24px;
+   display: flex;
+   justify-content: center;
+   align-items: flex-end;
+}
+
+.mdi-chevron-right:hover,
+.mdi-chevron-down:hover {
+    background-color: var(--button-inactive);
+}
+
+.add-subTask:hover,
+.button.delete:hover {
+    background-color: var(--button-inactive);
 }
 
 .panel {
@@ -201,6 +265,10 @@ select,
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.3s ease-out; 
+}
+
+input[type="checkbox"] {
+    border-radius: var(--space-xs);
 }
 
 input[type="checkbox"]:checked + span,

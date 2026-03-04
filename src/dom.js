@@ -97,13 +97,15 @@ const displayTodo = () => {
 
         // Accordion Logic
         const titleBtn = createNode('button', 'title-button', '');
-        const expandIcon = createNode('span', 'mdi mdi-chevron-right-circle', '');
+        const expandIcon = createNode('span', 'mdi mdi-chevron-right', '');
         expandIcon.style.cursor = "pointer";
         expandIcon.style.fontSize = "24px";
+        expandIcon.title = 'Collapse/Expand';
         titleBtn.appendChild(expandIcon);
-        const minimiseIcon = createNode('span', 'mdi mdi-chevron-down-circle', '');
+        const minimiseIcon = createNode('span', 'mdi mdi-chevron-down', '');
         minimiseIcon.style.cursor = "pointer";
         minimiseIcon.style.fontSize = "24px";
+        minimiseIcon.title = 'Collapse/Expand';
         titleBtn.appendChild(minimiseIcon);
         titleBtn.addEventListener('click', () => {
             handleAccordion(divPanel, expandIcon, minimiseIcon)
@@ -120,6 +122,7 @@ const displayTodo = () => {
         const divSubTask = createNode('div', 'divSubTask', '');
         divPanel.appendChild(divSubTask);
         const addSubTask = createNode('button', 'add-subTask', '+');
+        addSubTask.title = 'Add Subtask';
         todo.subTask.forEach(item => renderSubTask(item, divSubTask, todo, divPanel));
         addSubTask.addEventListener('click', (e) => {
             handleSubTask(e, divSubTask, todo, divPanel, expandIcon, minimiseIcon)
@@ -146,10 +149,11 @@ const displayTodo = () => {
         descriptionLabel.appendChild(saveDescription);
         descriptionLabel.appendChild(descriptionInput);
 
-        const deleteBtn = createNode('button', 'button delete', 'Delete Task');
+        const deleteBtn = createNode('button', 'button delete', 'x');
+        deleteBtn.title = 'Delete';
         deleteBtn.dataset.todoId = todo.id;
         deleteBtn.addEventListener('click', handleRemove);
-        mainContent.appendChild(deleteBtn);
+        titleBtn.appendChild(deleteBtn);
 
         const openPanel = Array.from(document.querySelectorAll('.panel'));
         if (openPanel) {
@@ -159,6 +163,7 @@ const displayTodo = () => {
 };
 
 const handleRemove = (e) => {
+    e.stopPropagation();
     const idToDelete = e.target.dataset.todoId;
     projectCollection[currentProject] = projectCollection[currentProject].filter(item => item.id !== idToDelete);
     displayTodo();
