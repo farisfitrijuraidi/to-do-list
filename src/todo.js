@@ -1,7 +1,17 @@
 let projectCollection = {};
 
+const randomColor = () => {
+    const letter = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letter[Math.floor(Math.random() * 16)];
+    }
+    return color;
+};
+
 const createTodo = ({title, dueDate, priority, subTask = []}) => {
     const id = crypto.randomUUID();
+    const color = randomColor();
     return {
         id,
         title,
@@ -9,6 +19,7 @@ const createTodo = ({title, dueDate, priority, subTask = []}) => {
         priority,
         subTask,
         isComplete : false,
+        color,
     }
 };
 

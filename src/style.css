@@ -1,52 +1,30 @@
 :root {
-    --color-primary: blueviolet;
-    --color-secondary: rgb(71, 0, 138);
-    --color-accent: #ffffff;
-
     --button-active: #e7e7e7;
     --button-inactive: rgb(241, 241, 241);
+    --button-background: #ebecee;
+    --button-border: #cbcacf;
     
     --bg-main: #f8f8fa;
-    --bg-panel: blueviolet;
     
-    --border-standard: 1px solid black;
     --border-light-grey: #E5E7EB;
 
     --space-xs: 4px;
     --space-sm: 8px;
     --space-md: 16px;
-    --space-lg: 32px;
-    --space-xl: 64px;
 
-    --font-heading: 'Quintessential', serif;
     --font-body: 'Delius', sans-serif;
-    --font-ui: 'Roboto', sans-serif;
     --font-ui2: 'Inter', sans-serif;
     --font-size-standard: 1rem;
-}
+    --font-size-smaller: 0.75rem;
 
-@font-face {
-    font-family: 'Roboto';
-    src: url('Roboto-Regular.woff2') format('woff2'),
-        url('Roboto-Regular.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+    --box-shadow-focus: 0 0 0 3px rgba(0, 0, 255, 0.2);
+    --standard-box-padding: 8px 1rem;
 }
 
 @font-face {
     font-family: 'Delius';
     src: url('Delius-Regular.woff2') format('woff2'),
         url('Delius-Regular.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Quintessential';
-    src: url('Quintessential-Regular.woff2') format('woff2'),
-        url('Quintessential-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -64,17 +42,18 @@
 * {
     box-sizing: border-box;
 }
+
 body {
     margin: 0;
     min-height: 100vh;
-    padding: var(--space-sm);
+    padding: 0 var(--space-sm) var(--space-sm) var(--space-sm);
     background-color: var(--button-inactive);
 }
 
 aside {
     display: grid;
     grid-template-columns: min-content auto;
-    padding: var(--space-xs);
+    padding: var(--space-sm);
     gap: var(--space-sm);
 }
 
@@ -85,6 +64,7 @@ aside {
     border-radius: var(--space-sm);
     padding-bottom: 2px;
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .addProject:hover {
@@ -102,10 +82,11 @@ aside {
     display: flex;
     justify-content: space-between;
     gap: var(--space-sm);
-    padding: var(--space-sm);
+    padding: var(--standard-box-padding);
     border-radius: var(--space-sm);
     background-color: var(--button-inactive);
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .project-button:hover {
@@ -132,10 +113,17 @@ aside {
     border-radius: 50%;
     padding-left: 2px;
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .mdi-close:hover {
     background-color: var(--button-inactive);
+}
+
+input:focus {
+    border: 1px solid blue;
+    outline: none;
+    box-shadow: var(--box-shadow-focus);
 }
 
 .input-task form {
@@ -144,12 +132,11 @@ aside {
     gap: var(--space-sm);   
 }
 
-input[type="text"],
+.divInput input[type="text"],
 input[type="date"],
 select,
 .addTask-btn {
     flex-grow: 1;
-    padding: 0.75rem;
     font-size: var(--font-size-standard);
     line-height: 1.5;
     border-radius: var(--space-sm);
@@ -161,12 +148,20 @@ input[type="text"],
 input[type="date"],
 select {
     background-color: white;
+    padding: var(--standard-box-padding);
 }
 
 .addTask-btn {
     background-color: black;
     color: white;
+    transition: background-color 0.2s ease;
+    padding: var(--standard-box-padding);
 }
+
+.addTask-btn:hover {
+    background-color: rgb(51, 49, 49);
+}
+
 input[type="text"] {
     cursor: text;
     width: 100%;
@@ -237,16 +232,30 @@ main {
     align-items: flex-end;
 }
 
+.button.delete:hover {
+    border: 1px solid red;
+    background-color: rgb(243, 206, 206);
+    color: red;
+}
+
+.button.delete {
+    transition: 
+        border 0.2s ease,
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
 .mdi-chevron-right,
 .mdi-chevron-down {
-   background-color: #ebecee; 
-   border: 1px solid #cbcacf;
+   background-color: var(--button-background); 
+   border: 1px solid var(--button-border);
    border-radius: var(--space-xs);
    width: 24px;
    height: 24px;
    display: flex;
    justify-content: center;
    align-items: flex-end;
+   transition: background-color 0.2s ease;
 }
 
 .mdi-chevron-right:hover,
@@ -254,14 +263,14 @@ main {
     background-color: var(--button-inactive);
 }
 
-.add-subTask:hover,
-.button.delete:hover {
+.add-subTask:hover {
     background-color: var(--button-inactive);
 }
 
 .panel {
-  padding: 0 18px;
   background-color: white;
+  border-radius: var(--space-sm);
+  margin-bottom: var(--space-sm);
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.3s ease-out; 
@@ -276,3 +285,80 @@ input[type="checkbox"]:checked + input {
     text-decoration: line-through;
     color: gray;
 }
+
+.divDescription {
+    padding: 12px;
+}
+
+.divSubTask {
+    padding: 0 12px 12px 12px;
+}
+
+.labelDescription,
+.labelSubtask {
+    display: flex;
+    gap: var(--space-xs);
+}
+
+.labelSubtask {
+    margin-bottom: var(--space-sm);
+}
+.labelDescription button,
+.labelSubtask button {
+    font-size: var(--font-size-smaller);
+    line-height: 1.5;
+    border-radius: var(--space-sm);
+    border: 1px solid var(--border-light-grey);
+    font-family: var(--font-ui2);
+    background-color: var(--button-background);
+}
+
+.labelSubtask button,
+.close-subtask {
+    width: 42px;
+    height: 36px;
+}
+
+.close-subtask {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--font-size-standard);
+    font-family: var(--font-ui2);
+    border-radius: var(--space-sm);
+    border: 1px solid var(--border-light-grey);
+    background-color: var(--button-background);
+    font-weight: bold;
+    transition: 
+        border 0.2s ease,
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.close-subtask:hover {
+    border: 1px solid red;
+    background-color: rgb(243, 206, 206);
+    color: red;
+}
+
+.labelDescription button,
+.labelSubtask button:enabled,
+.close-subtask {
+    cursor: pointer;
+}
+
+.labelDescription button:hover,
+.labelSubtask button:enabled:hover {
+    filter: brightness(0.95);   
+}
+
+.labelDescription input[type="text"],
+.labelSubtask input[type="text"] {
+    padding: var(--standard-box-padding);
+    font-size: var(--font-size-smaller);
+    line-height: 1.5;
+    border-radius: var(--space-sm);
+    border: 1px solid var(--border-light-grey);
+    font-family: var(--font-ui2);
+}
+

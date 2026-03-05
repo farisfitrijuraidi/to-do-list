@@ -3,6 +3,8 @@ import { projectCollection, createProject, addToProject, saveToLocal, createSubT
 const sidebar = document.querySelector('#side-bar');
 const mainContent = document.querySelector('main');
 const form = document.querySelector('form');
+const title = document.getElementById('title');
+const dueDate = document.getElementById('dueDate');
 const addProject = document.querySelector('#addProject');
 let projectNames = Object.keys(projectCollection || {});
 let currentProject;
@@ -39,6 +41,7 @@ const handleCloseProjectButton = (e, targetItem) => {
     sidebar.innerHTML = '';
     mainContent.innerHTML = '';
     delete projectCollection[targetItem];
+    if (targetItem === currentProject) { currentProject = null; }
     projectNames = Object.keys(projectCollection || {}); 
     displayProject();
     saveToLocal();
@@ -74,6 +77,7 @@ const displayTodo = () => {
     projectCollection[currentProject].forEach(todo => {
         // Main Task Logic
         const titleLabel = createNode('div', 'title', '');
+        titleLabel.style.borderLeft = `8px solid ${todo.color}`;
         mainContent.appendChild(titleLabel);
         const spanTitle = createNode('span', 'title-checkmark', todo.title);
         titleLabel.appendChild(spanTitle);
@@ -117,23 +121,11 @@ const displayTodo = () => {
         }
         titleLabel.appendChild(titleBtn);
         
-
-        // Subtask Logic
-        const divSubTask = createNode('div', 'divSubTask', '');
-        divPanel.appendChild(divSubTask);
-        const addSubTask = createNode('button', 'add-subTask', '+');
-        addSubTask.title = 'Add Subtask';
-        todo.subTask.forEach(item => renderSubTask(item, divSubTask, todo, divPanel));
-        addSubTask.addEventListener('click', (e) => {
-            handleSubTask(e, divSubTask, todo, divPanel, expandIcon, minimiseIcon)
-        });
-        titleBtn.appendChild(addSubTask);
-
         // Description Logic
         const divDescription = createNode('div', 'divDescription', '');
         divPanel.appendChild(divDescription);
         const saveDescription = createNode('button', '', 'Save');
-        const descriptionLabel = document.createElement('label');
+        const descriptionLabel = createNode('label', 'labelDescription', '');
         const formDescription = document.createElement('form');
         const descriptionInput = document.createElement('input');
         descriptionInput.type = 'text';
@@ -146,8 +138,19 @@ const displayTodo = () => {
         });
         divDescription.appendChild(formDescription);
         formDescription.appendChild(descriptionLabel);
-        descriptionLabel.appendChild(saveDescription);
         descriptionLabel.appendChild(descriptionInput);
+        descriptionLabel.appendChild(saveDescription);
+
+        // Subtask Logic
+        const divSubTask = createNode('div', 'divSubTask', '');
+        divPanel.appendChild(divSubTask);
+        const addSubTask = createNode('button', 'add-subTask', '+');
+        addSubTask.title = 'Add Subtask';
+        todo.subTask.forEach(item => renderSubTask(item, divSubTask, todo, divPanel));
+        addSubTask.addEventListener('click', (e) => {
+            handleSubTask(e, divSubTask, todo, divPanel, expandIcon, minimiseIcon)
+        });
+        titleBtn.appendChild(addSubTask);
 
         const deleteBtn = createNode('button', 'button delete', 'x');
         deleteBtn.title = 'Delete';
@@ -213,9 +216,11 @@ const handleAccordion = (targetPanel, targetIcon1, targetIcon2) => {
 const insertTodo = (event) => {
     event.preventDefault();
     if (!currentProject) {
+        console.log(currentProject);
         alert('No active project selected!');
         return;
     } else {
+        console.log(currentProject);
         const todoData = {
             title: title.value,
             dueDate: dueDate.value,
@@ -230,13 +235,12 @@ const renderSubTask = (item, targetContainer, targetTask, targetContainer2) => {
     let newsubTask;
     const formSubTask = document.createElement('form');
     targetContainer.appendChild(formSubTask);
-    const labelSubTask = document.createElement('label');
+    const labelSubTask = createNode('label', 'labelSubtask', '');
     formSubTask.appendChild(labelSubTask);
 
     // InputSubTask Logic
     const inputSubTask = document.createElement('input');
     inputSubTask.type = 'text';
-    inputSubTask.id = 'subtask';
     inputSubTask.name = 'subtask';
     inputSubTask.dataset.subTaskid = item.id;
     if (targetTask.subTask.length === 0) {
