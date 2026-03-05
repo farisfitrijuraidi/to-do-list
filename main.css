@@ -148,7 +148,6 @@ input[type="text"],
 input[type="date"],
 select {
     background-color: white;
-    width: 100%;
     box-sizing: border-box;
     padding: var(--standard-box-padding);
 }
