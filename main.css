@@ -148,6 +148,8 @@ input[type="text"],
 input[type="date"],
 select {
     background-color: white;
+    width: 100%;
+    box-sizing: border-box;
     padding: var(--standard-box-padding);
 }
 
@@ -305,6 +307,7 @@ input[type="checkbox"]:checked + input {
 .labelSubtask {
     margin-bottom: var(--space-sm);
 }
+
 .labelDescription button,
 .labelSubtask button {
     font-size: var(--font-size-smaller);
