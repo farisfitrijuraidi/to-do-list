@@ -132,8 +132,8 @@ input:focus {
     gap: var(--space-sm);   
 }
 
-.divInput input[type="text"],
-input[type="date"],
+#title,
+#dueDate,
 select,
 .addTask-btn {
     flex-grow: 1;
@@ -144,8 +144,8 @@ select,
     font-family: var(--font-ui2);
 }
 
-input[type="text"],
-input[type="date"],
+#title,
+#dueDate,
 select {
     background-color: white;
     box-sizing: border-box;
@@ -163,7 +163,7 @@ select {
     background-color: rgb(51, 49, 49);
 }
 
-input[type="text"] {
+#title {
     cursor: text;
     width: 100%;
 }
