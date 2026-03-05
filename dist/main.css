@@ -1,0 +1,369 @@
+:root {
+    --button-active: #e7e7e7;
+    --button-inactive: rgb(241, 241, 241);
+    --button-background: #ebecee;
+    --button-border: #cbcacf;
+    
+    --bg-main: #f8f8fa;
+    
+    --border-light-grey: #E5E7EB;
+
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+
+    --font-body: 'Delius', sans-serif;
+    --font-ui2: 'Inter', sans-serif;
+    --font-size-standard: 1rem;
+    --font-size-smaller: 0.75rem;
+
+    --box-shadow-focus: 0 0 0 3px rgba(0, 0, 255, 0.2);
+    --standard-box-padding: 8px 1rem;
+}
+
+@font-face {
+    font-family: 'Delius';
+    src: url(22d78849e19687cfd5dc.woff2) format('woff2'),
+        url(e0a147da53a74387c1e4.woff) format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url(3c29b5f4fe1780828fec.woff2) format('woff2'),
+        url(aa1477c6d4c571b4c549.woff) format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 0 var(--space-sm) var(--space-sm) var(--space-sm);
+    background-color: var(--button-inactive);
+}
+
+aside {
+    display: grid;
+    grid-template-columns: min-content auto;
+    padding: var(--space-sm);
+    gap: var(--space-sm);
+}
+
+.addProject {
+    font-family: var(--font-ui2);
+    font-size: large;
+    border: none;
+    border-radius: var(--space-sm);
+    padding-bottom: 2px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.addProject:hover {
+    background-color: var(--button-active);
+}
+
+.side-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 200px));
+    gap: var(--space-sm);
+    font-family: var(--font-ui2);
+}
+
+.project-button {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding: var(--standard-box-padding);
+    border-radius: var(--space-sm);
+    background-color: var(--button-inactive);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.project-button:hover {
+    background-color: var(--button-active);
+}
+
+.project-button.active {
+    background-color: white;
+    transition: background-color 0.2s ease;
+}
+
+.button.sidebar {
+    min-width: 0;
+    width: 200px;          
+    font-size: var(--font-size-standard);
+    white-space: nowrap;    
+    overflow: hidden;       
+    text-overflow: ellipsis;
+}
+
+.mdi-close {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    padding-left: 2px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.mdi-close:hover {
+    background-color: var(--button-inactive);
+}
+
+input:focus {
+    border: 1px solid blue;
+    outline: none;
+    box-shadow: var(--box-shadow-focus);
+}
+
+.input-task form {
+    display: grid;
+    grid-template-columns: minmax(500px, 1500px) 1fr 1fr max-content;
+    gap: var(--space-sm);   
+}
+
+.divInput input[type="text"],
+input[type="date"],
+select,
+.addTask-btn {
+    flex-grow: 1;
+    font-size: var(--font-size-standard);
+    line-height: 1.5;
+    border-radius: var(--space-sm);
+    border: 1px solid var(--border-light-grey);
+    font-family: var(--font-ui2);
+}
+
+input[type="text"],
+input[type="date"],
+select {
+    background-color: white;
+    padding: var(--standard-box-padding);
+}
+
+.addTask-btn {
+    background-color: black;
+    color: white;
+    transition: background-color 0.2s ease;
+    padding: var(--standard-box-padding);
+}
+
+.addTask-btn:hover {
+    background-color: rgb(51, 49, 49);
+}
+
+input[type="text"] {
+    cursor: text;
+    width: 100%;
+}
+
+input[type="date"],
+select,
+.addTask-btn {
+    cursor: pointer;
+}
+
+.task-info {
+    display: grid;
+    grid-template-columns: 50px repeat(3, 1fr) 90px;
+    padding: 12px;
+}
+
+.task-info .action {
+    display: flex;
+    justify-content: center;
+}
+
+.task-info span {
+    font-family: var(--font-ui2); 
+    font-size: var(--font-size-standard);
+    line-height: 1.5;
+    font-weight: bold;
+}
+
+main {
+    padding: 12px;
+    background-color: var(--bg-main);
+}
+
+.title {
+    display: grid;
+    grid-template-columns: 50px repeat(3, 1fr) 90px;
+    border: 1px solid var(--border-light-grey);
+    border-radius: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    font-family: var(--font-ui2);
+    width: 100%;
+    height: 60px;
+    font-size: var(--font-size-standard);
+    justify-content: space-between; 
+    align-items: center;
+}
+
+ .title-button {
+    border: none;
+    background-color: var(--bg-main);
+    display: flex;
+    gap: var(--space-xs);
+}
+
+.add-subTask,
+.button.delete {
+    background-color: #ebecee;
+    font-size: 1.25rem;
+    font-family: var(--font-ui2);
+    cursor: pointer;
+    border: 1px solid #cbcacf;
+    border-radius: var(--space-xs);
+    height: 24px;
+    width: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.button.delete:hover {
+    border: 1px solid red;
+    background-color: rgb(243, 206, 206);
+    color: red;
+}
+
+.button.delete {
+    transition: 
+        border 0.2s ease,
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.mdi-chevron-right,
+.mdi-chevron-down {
+   background-color: var(--button-background); 
+   border: 1px solid var(--button-border);
+   border-radius: var(--space-xs);
+   width: 24px;
+   height: 24px;
+   display: flex;
+   justify-content: center;
+   align-items: flex-end;
+   transition: background-color 0.2s ease;
+}
+
+.mdi-chevron-right:hover,
+.mdi-chevron-down:hover {
+    background-color: var(--button-inactive);
+}
+
+.add-subTask:hover {
+    background-color: var(--button-inactive);
+}
+
+.panel {
+  background-color: white;
+  border-radius: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-out; 
+}
+
+input[type="checkbox"] {
+    border-radius: var(--space-xs);
+}
+
+input[type="checkbox"]:checked + span,
+input[type="checkbox"]:checked + span + p,
+input[type="checkbox"]:checked + span + p + p,
+input[type="checkbox"]:checked + input {
+    text-decoration: line-through;
+    color: gray;
+}
+
+.divDescription {
+    padding: 12px;
+}
+
+.divSubTask {
+    padding: 0 12px 12px 12px;
+}
+
+.labelDescription,
+.labelSubtask {
+    display: flex;
+    gap: var(--space-xs);
+}
+
+.labelSubtask {
+    margin-bottom: var(--space-sm);
+}
+.labelDescription button,
+.labelSubtask button {
+    font-size: var(--font-size-smaller);
+    line-height: 1.5;
+    border-radius: var(--space-sm);
+    border: 1px solid var(--border-light-grey);
+    font-family: var(--font-ui2);
+    background-color: var(--button-background);
+}
+
+.labelSubtask button,
+.close-subtask {
+    width: 42px;
+    height: 36px;
+}
+
+.close-subtask {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--font-size-standard);
+    font-family: var(--font-ui2);
+    border-radius: var(--space-sm);
+    border: 1px solid var(--border-light-grey);
+    background-color: var(--button-background);
+    font-weight: bold;
+    transition: 
+        border 0.2s ease,
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.close-subtask:hover {
+    border: 1px solid red;
+    background-color: rgb(243, 206, 206);
+    color: red;
+}
+
+.labelDescription button,
+.labelSubtask button:enabled,
+.close-subtask {
+    cursor: pointer;
+}
+
+.labelDescription button:hover,
+.labelSubtask button:enabled:hover {
+    filter: brightness(0.95);   
+}
+
+.labelDescription input[type="text"],
+.labelSubtask input[type="text"] {
+    padding: var(--standard-box-padding);
+    font-size: var(--font-size-smaller);
+    line-height: 1.5;
+    border-radius: var(--space-sm);
+    border: 1px solid var(--border-light-grey);
+    font-family: var(--font-ui2);
+}
+
+
+
+/*# sourceMappingURL=main.css.map*/
